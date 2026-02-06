@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Lowam – Reconnaissance vocale</title>
+</head>
+<body>
+
+<button onclick="startRecognition()">🎤 Parler</button>
+<p id="resultat"></p>
+
+<script>
+  var recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+  recognition.lang = "fr-FR";
+  recognition.interimResults = false;
+
+  recognition.onresult = function(event) {
+    var texte = event.results[0][0].transcript;
+    document.getElementById("resultat").innerText = texte;
+
+    // Envoi du texte à Thunkable
+    if (window.ThunkableWebviewerExtension) {
+      ThunkableWebviewerExtension.postMessage(texte);
+    }
+  };
+
+  function startRecognition() {
+    recognition.start();
+  }
+</script>
+
+</body>
+</html>
